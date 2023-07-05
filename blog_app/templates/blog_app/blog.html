@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load render_partial %}
+
+<div id="preloader">
+    <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+
+{% block content %}
+    <!-- Page Content -->
+    <br><br><br><br><br>
+    <div align="center">
+        <div align="center" style="margin-left: auto;margin-right: auto;display: inline-flex">
+            <form action="{% url 'most_visited' %}">
+                <button type="submit" class="btn btn-info" style="margin-left: 20px">بیشترین بازدید
+                </button>
+            </form>
+            <form action="{% url 'blog' %}">
+                <button type="submit" class="btn btn-info" style="margin-left: 20px">جدیدترین</button>
+            </form>
+            <form action="{% url 'least_visited' %}">
+                <button type="submit" class="btn btn-info" style="margin-left: 20px">کمترین بازدید</button>
+            </form>
+            <form action="{% url 'oldest' %}">
+                <button type="submit" class="btn btn-info" style="margin-left: 20px">قدیمی ترین</button>
+            </form>
+        </div>
+    </div>
+    <section class="blog-posts grid-system">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            {% for post in posts %}
+                                <div class="col-lg-6">
+                                    <div class="blog-post">
+                                        <div class="blog-thumb">
+                                            <img src="{{ post.image.url }}" alt="">
+                                        </div>
+                                        <div class="down-content">
+                                            <span>{{ post.category.first }}</span>
+                                            <a href="{% url 'post_detail' post.slug %}"><h4>{{ post.title }}</h4></a>
+                                            <ul class="post-info">
+                                                <li><a href="#">{{ post.author }}</a></li>
+                                                <li><a href="#">{{ post.shamsi_date }}</a></li>
+                                                <li><a href="#">{{ post.view }}</a></li>
+                                            </ul>
+                                            <p>{{ post.body|truncatewords:20 }}</p>
+                                            <div class="post-options">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <ul class="post-tags">
+                                                            <li><i class="fa fa-tags"></i></li>
+                                                            <li><a href="#">Best Templates</a>,</li>
+                                                            <li><a href="#">TemplateMo</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <div class="col-lg-12">
+                                <ul class="page-numbers">
+                                    <li><a href="#">1</a></li>
+                                    <li class="active"><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% render_partial 'sidebar' %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+    
+
+
+
+

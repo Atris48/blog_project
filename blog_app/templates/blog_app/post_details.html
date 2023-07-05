@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load render_partial %}
+
+
+{% block content %}
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <br><br><br><br><br><br>
+    <div align="center">
+
+    </div>
+
+    <section class="blog-posts grid-system">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="blog-post">
+                                    <div class="blog-thumb">
+                                        <img src="{{ post.image.url }}" alt="">
+                                    </div>
+                                    <div class="down-content">
+                                        <span>{{ post.category.first }}</span>
+                                        <a href="post-details.html"><h4>{{ post.title }}</h4></a>
+                                        <ul class="post-info">
+                                            <li><a href="#">{{ post.author }}</a></li>
+                                            <li><a href="#">{{ post.shamsi_date }}</a></li>
+                                            <li><a href="#">10 Comments</a></li>
+                                        </ul>
+                                        <p>
+                                            {{ post.body }}
+                                        </p>
+                                        <div class="post-options">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    {% if request.user.is_authenticated %}
+                                                        <ul class="post-tags">
+                                                            <li>
+                                                                <a id="form-submit" href="">
+                                                                    {% if  request.user.like_set.first.post.slug == post.slug %}
+                                                                        <i id="heart" class="fa fa-heart">
+                                                                        {{ likes_count }}
+                                                                    {% else %}
+                                                                        <i id="heart" class="fa fa-heart-o">
+                                                                        {{ likes_count }}
+                                                                    {% endif %}
+
+
+                                                                    </i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-6">
+                                                    <ul class="post-share">
+                                                        <li><i class="fa fa-share-alt"></i></li>
+                                                        <li><a href="#">Facebook</a>,</li>
+                                                        <li><a href="#"> Twitter</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="sidebar-item comments">
+                                    <div class="sidebar-heading">
+                                        <h2>4 comments</h2>
+                                    </div>
+                                    <div class="content">
+                                        <ul>
+                                            {% for comment in post.comment_set.all %}
+                                                {% if comment.reply == None %}
+                                                    <li>
+                                                        <div class="author-thumb">
+                                                            <img src="assets/images/comment-author-01.jpg" alt="">
+                                                        </div>
+                                                        <div class="right-content">
+                                                            <h4>{{ comment.user.email|truncatechars:15 }}<span>{{ comment.created_at }}</span>
+                                                            </h4>
+                                                            <p>{{ comment.message }}</p>
+                                                            <form action="{% url 'reply_comment' %}" method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" hidden="hidden"
+                                                                       value="{{ comment.id }}" name="comment_id">
+                                                                <input type="hidden" hidden="hidden"
+                                                                       value="{{ post.slug }}" name="post_slug">
+                                                                <textarea style="height: 50px" name="message" rows="6"
+                                                                          id="message"
+                                                                          placeholder="Type your comment"
+                                                                          required=""></textarea>
+                                                                <br>
+                                                                <button type="submit" class="btn btn-success">پاسخ
+                                                                </button>
+
+                                                            </form>
+                                                            {% if comment.user == request.user %}
+                                                                <form method="post" action="{% url 'remove_comment' %}">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" hidden="hidden"
+                                                                           value="{{ post.slug }}" name="post_slug"
+                                                                           id="">
+                                                                    <input type="hidden" hidden="hidden"
+                                                                           name="comment_id" id=""
+                                                                           value="{{ comment.id }}">
+                                                                    <button class="btn btn-danger">حذف</button>
+                                                                </form>
+                                                            {% endif %}
+                                                        </div>
+                                                    </li>
+                                                    {% for reply in comment.replies.all %}
+                                                        <li class="replied">
+                                                            <div class="author-thumb">
+                                                                <img src="assets/images/comment-author-02.jpg" alt="">
+                                                            </div>
+                                                            <div class="right-content">
+                                                                <h4>{{ reply.user.email|truncatechars:15 }}<span>{{ reply.created_at }}</span>
+                                                                </h4>
+                                                                <p>{{ reply.message }}</p>
+                                                                {% if reply.user == request.user %}
+                                                                    <form method="post"
+                                                                          action="{% url 'remove_comment' %}">
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" hidden="hidden"
+                                                                               value="{{ post.slug }}" name="post_slug"
+                                                                               id="">
+                                                                        <input type="hidden" hidden="hidden"
+                                                                               name="comment_id" id=""
+                                                                               value="{{ reply.id }}">
+                                                                        <button class="btn btn-danger">حذف</button>
+                                                                    </form>
+                                                                {% endif %}
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+
+
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="sidebar-item submit-comment">
+                                    <div class="sidebar-heading">
+                                        {% if request.user.is_authenticated %}
+                                            <h2>Your comment</h2>
+                                        {% else %}
+                                            <a style="text-align: center" href="{% url 'login' %}">
+                                                <h2 align="center" class="btn btn-warning">برای کامنت گذاشتن وارد
+                                                    شوید</h2>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                        <div class="content">
+                                            <form id="comment" action="{% url 'comment' %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="row">
+
+                                                    <div class="col-lg-12">
+                                                        <fieldset>
+                                                    <textarea name="message" rows="6" id="message"
+                                                              placeholder="Type your comment" required=""></textarea>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <fieldset>
+                                                            <input type="hidden" hidden="hidden" name="post_slug"
+                                                                   value="{{ post.slug }}">
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <fieldset>
+                                                            <button type="submit" id="form-submit" class="main-button">
+                                                                Submit
+                                                            </button>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% render_partial 'sidebar' %}
+            </div>
+        </div>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.5/axios.min.js"
+            integrity="sha512-nnNHpffPSgINrsR8ZAIgFUIMexORL5tPwsfktOTxVYSv+AUAILuFYWES8IHl+hhIhpFGlKvWFiz9ZEusrPcSBQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var but = document.getElementById('form-submit')
+        var heart = document.getElementById('heart')
+
+        function setEventListeners() {
+            but.removeEventListener("click", likeHandler);
+            but.removeEventListener("click", removeLikeHandler);
+
+            if (heart.className === 'fa fa-heart-o') {
+                but.addEventListener("click", likeHandler);
+            } else if (heart.className === 'fa fa-heart') {
+                but.addEventListener("click", removeLikeHandler);
+            }
+        }
+
+        function likeHandler(e) {
+            e.preventDefault();
+            const post = {{ post.id }};
+            let fd = new FormData();
+            fd.append("post", post);
+            fd.append("csrfmiddlewaretoken", '{{csrf_token}}');
+            axios.post('/like', fd)
+                .then(res => {
+                    document.getElementById('heart').className = 'fa fa-heart'
+                    document.getElementById('heart').innerText = res.data.count
+                    setEventListeners();
+                })
+                .catch(err => {
+                    console.log('error')
+                })
+        }
+
+        function removeLikeHandler(e) {
+            e.preventDefault();
+            const post = {{ post.id }};
+            let fd = new FormData();
+            fd.append("post", post);
+            fd.append("csrfmiddlewaretoken", '{{csrf_token}}');
+            axios.post('/remove_like', fd)
+                .then(res => {
+                    document.getElementById('heart').className = 'fa fa-heart-o'
+                    document.getElementById('heart').innerText = res.data.count
+                    setEventListeners();
+                })
+                .catch(err => {
+                    console.log('error')
+                })
+        }
+
+        setEventListeners();
+    </script>
+
+{% endblock %}
+
+
+
+
