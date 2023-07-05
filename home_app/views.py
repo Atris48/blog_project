@@ -4,7 +4,8 @@ from blog_app.models import Category, Post
 
 
 def home(request):
-    return render(request, 'home_app/index.html')
+    posts = Post.objects.all()[:3]
+    return render(request, 'home_app/index.html', {'posts': posts})
 
 
 def sidebar(request):
