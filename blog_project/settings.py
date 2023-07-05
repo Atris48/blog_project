@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home_app',
     'account_app',
+    'blog_app',
     'django_render_partial',
     'widget_tweaks',
 ]
