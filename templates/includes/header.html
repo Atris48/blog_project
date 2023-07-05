@@ -20,24 +20,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Blog</a>
                     </li>
-                    {#                    <li class="nav-item">#}
-                    {#                        <a class="nav-link" href="contact.html">Contact Us</a>#}
-                    {#                    </li>#}
-                    {#                    {% if request.user.is_authenticated %}#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a style="color:red;" class="nav-link" href="{% url 'logout' %}">logout</a>#}
-                    {#                        </li>#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a style="color: green" class="nav-link">{{ request.user.email|truncatechars:15 }}</a>#}
-                    {#                        </li>#}
-                    {#                    {% else %}#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a style="color: yellowgreen" class="nav-link" href="{% url 'login' %}">login</a>#}
-                    {#                        </li>#}
-                    {#                        <li class="nav-item">#}
-                    {#                            <a style="color: green" class="nav-link" href="{% url 'signup' %}">register</a>#}
-                    {#                        </li>#}
-                    {#                    {% endif %}#}
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a style="color:red;" class="nav-link" href="{% url 'logout' %}">logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="color: green" class="nav-link">{{ request.user.email|truncatechars:15 }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a style="color: yellowgreen" class="nav-link" href="{% url 'login' %}">login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="color: green" class="nav-link" href="{% url 'signup' %}">register</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
