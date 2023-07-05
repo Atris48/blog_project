@@ -252,7 +252,7 @@
             let fd = new FormData();
             fd.append("post", post);
             fd.append("csrfmiddlewaretoken", '{{csrf_token}}');
-            axios.post('/remove_like', fd)
+            axios.post('/remove-like', fd)
                 .then(res => {
                     document.getElementById('heart').className = 'fa fa-heart-o'
                     document.getElementById('heart').innerText = res.data.count

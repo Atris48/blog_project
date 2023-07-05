@@ -14,23 +14,6 @@
 {% block content %}
     <!-- Page Content -->
     <br><br><br><br><br>
-    <div align="center">
-        <div align="center" style="margin-left: auto;margin-right: auto;display: inline-flex">
-            <form action="{% url 'most_visited' %}">
-                <button type="submit" class="btn btn-info" style="margin-left: 20px">بیشترین بازدید
-                </button>
-            </form>
-            <form action="{% url 'blog' %}">
-                <button type="submit" class="btn btn-info" style="margin-left: 20px">جدیدترین</button>
-            </form>
-            <form action="{% url 'least_visited' %}">
-                <button type="submit" class="btn btn-info" style="margin-left: 20px">کمترین بازدید</button>
-            </form>
-            <form action="{% url 'oldest' %}">
-                <button type="submit" class="btn btn-info" style="margin-left: 20px">قدیمی ترین</button>
-            </form>
-        </div>
-    </div>
     <section class="blog-posts grid-system">
         <div class="container">
             <div class="row">
