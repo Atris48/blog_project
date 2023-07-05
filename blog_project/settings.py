@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_render_partial',
     'widget_tweaks',
     'ckeditor',
+    'captcha',
 ]
 
 MIDDLEWARE = [
