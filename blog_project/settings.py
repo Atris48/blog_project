@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'home_app',
     'account_app',
     'blog_app',
+    'contact_us_app',
+
     'django_render_partial',
     'widget_tweaks',
     'ckeditor',
