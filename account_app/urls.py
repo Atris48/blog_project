@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout', views.user_logout, name='logout'),
     path('resend-code', views.resend_code, name='resend_code'),
     path('verify-email', views.VerifyEmailView.as_view(), name='verify_email'),
+    path('edit-profile', views.user_edit_profile, name='user_edit_profile'),
 ]

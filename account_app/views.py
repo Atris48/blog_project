@@ -2,12 +2,15 @@ import datetime
 from random import randint
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from account_app.forms import UserCreationForm
+from account_app.forms import UserCreationForm, UserEditProfile
 from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from account_app.models import User
+
+user = User.objects.first()
+user.email = ''
 
 
 class SignupView(View):
@@ -111,7 +114,6 @@ def user_login(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, 'هانیه سلطانی خوش آمدی ')
                 return redirect('home')
             else:
                 messages.error(request, 'کاربری یافت نشد')
@@ -127,3 +129,16 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+def user_edit_profile(request):
+    if not request.user.is_authenticated:
+        messages.error(request, 'وارد شوید')
+        return redirect('login')
+    if request.method == 'POST':
+        form = UserEditProfile(instance=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('user_edit_profile')
+    form = UserEditProfile(instance=request.user)
+    return render(request, 'account_app/edit_profile.html', {'form': form})
